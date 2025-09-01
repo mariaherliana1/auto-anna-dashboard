@@ -5,9 +5,8 @@ from typing import List, Optional
 class Files:
     client: str
     dashboard: str
-    console: str
     output: str
-    carrier: str = "Atlasat" # default carrier
+    carrier: str = "Atlasat"  # default carrier
     rate: Optional[float] = None
     rate_type: Optional[str] = "per_minute"
 
@@ -21,11 +20,10 @@ class Files:
     number2_rate_type: Optional[str] = "per_minute"
     number2_chargeable_call_types: List[str] = field(default_factory=list)
 
-    #S2C logic
+    # S2C logic
     s2c: Optional[str] = None
     s2c_rate: Optional[float] = None
     s2c_rate_type: Optional[str] = "per_minute"
 
-    #General
+    # General
     chargeable_call_types: List[str] = field(default_factory=list)
-    #custom_logic: Optional[str] = None
