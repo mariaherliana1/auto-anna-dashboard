@@ -23,8 +23,14 @@ valid_carriers = ["Atlasat", "Indosat", "Telkom", "Quiros", "MGM"]
 if "carrier" not in st.session_state or st.session_state["carrier"] not in valid_carriers:
     st.session_state["carrier"] = "Atlasat"
 
-available_call_types = ["outbound call", "predictive dialer", 
-    "incoming call", "play_sound", "read_dtmf", "answering machine"]
+available_call_types = [
+    "outbound call",
+    "predictive dialer",
+    "incoming call",
+    "play_sound",
+    "read_dtmf",
+    "answering machine",
+]
 
 for key, default in selectbox_defaults.items():
     if key not in st.session_state or st.session_state[key] not in ["per_minute", "per_second"]:
@@ -39,7 +45,6 @@ def generate_config_entry(data: dict) -> str:
     return f"""    Files(
         client={quote(data["client"])},
         dashboard={quote(data["dashboard"])},
-        console={quote(data["console"])},
         output={quote(data["output"])},
         carrier={quote(data["carrier"])},
         number1={quote(data["number1"]) if data["number1"] else "None"},
@@ -119,19 +124,14 @@ with st.form("client_only_config_form"):
     # Show paths markdown only if client_name and folder_prefix are set
     if client_name and folder_prefix:
         dashboard_path = f"{folder_prefix}/DB/{client_name}.csv"
-        console_path = f"{folder_prefix}/Console/{client_name}.csv"
-        output_path = f"{folder_prefix}/Merge/{client_name}.csv"
+        output_path = f"{folder_prefix}/Processed/{client_name}.csv"
 
-        # Save markdown in session state to persist and control later
         st.session_state["md_dashboard"] = f"📁 **Dashboard path:** `{dashboard_path}`"
-        st.session_state["md_console"] = f"📁 **Console path:** `{console_path}`"
         st.session_state["md_output"] = f"📁 **Output path:** `{output_path}`"
 
     # Render markdown only if it exists in session state
     if "md_dashboard" in st.session_state:
         st.markdown(st.session_state["md_dashboard"])
-    if "md_console" in st.session_state:
-        st.markdown(st.session_state["md_console"])
     if "md_output" in st.session_state:
         st.markdown(st.session_state["md_output"])
 
@@ -179,7 +179,6 @@ with st.form("client_only_config_form"):
             data = {
                 "client": client_name,
                 "dashboard": dashboard_path,
-                "console": console_path,
                 "output": output_path,
                 "carrier": carrier,
                 "number1": number1 or None,
@@ -204,7 +203,6 @@ with st.form("client_only_config_form"):
             st.success("✔ Config added or updated successfully!")
             st.code(f"""
 Dashboard: {dashboard_path}
-Console:   {console_path}
 Output:    {output_path}
 """, language="text")
 
